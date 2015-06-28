@@ -4,7 +4,7 @@ Les game jams express des Charles!
 
 On profite d'un trou dans notre journée pour tester un framework, en 1h30.
 
-* __processing python__
+* __processing python__ [done]
 * love2D
 * sfml
 * haskell gloss
