@@ -1,10 +1,10 @@
 import random
 import math
 
-class PillarMode(object):
+class GlobalVars(object):
     def __init__(self):
         self.pm = -1
-pm = PillarMode()
+gv = GlobalVars()
 
 class Entity(object):
     def __init__(self, x = 3, y = 3, z = 0, img='background'):
@@ -18,16 +18,39 @@ class Pillar(object):
         self.x = x
         self.y = y
         self.instructions = []
-        self.positionsX = [[383, 452, 507, 570], [396,430,504,575], [360,431,489,551]]
-        self.positionsY = [[456, 456, 456, 456], [604,604,604,604], [756,756,756,756]]
+        self.instructEntities = []
+        self.positionsX = [383, 452, 507, 570, 396,430,504,575, 360,431,489,551]
+        self.positionsY = [456, 604, 756]
         
+    def canAddInstruction(self):
+        return len(self.instruction <12)
+    
+    def addInstruction(self, instruct):
+        pos = len(self.instructions)
+        posY = self.positionsY[pos/4]
+        posX = self.positionsX[pos]
+        self.instructions.append(instruct)
+        ent = Entity(posX, posY ,1,'glyphe'+instruct)
+        self.instructEntities.append(ent)
+        
+    def removeInstruction(self, x, y):
+        for i in range(0, len(instructions)):
+            if x > self.positionsX[i]+10 and x < self.positionsX[i]-10 and y > self.positionsY[i]+10 and y < self.positionsY[i]-10:
+                self.instructions.pop(i)
+                self.instructEntities.pop(i)
+                for j in range(i, len(instructions)):
+                    self.instructEntities.x = self.positionsX[j]
+                    self.instructEntities.y = self.positionsY[j/4]
+                break
+                
 class Henri(object):
-    def __init__(self, x = 0, y = 0, entity = 0):
+    def __init__(self, x = 0, y = 0, entity = 0, sex = 'F'):
         self.x = x
         self.y = y
         self.instruction = [0]        
         self.ptr = 0
         self.entity = entity
+        self.sex = sex
         
     def move(self):
         ins = self.instruction[self.ptr]
@@ -87,7 +110,7 @@ def draw():
     for entity in ents:
         image(images[entity.img], entity.x, entity.y)
         
-    if pm.pm >= 0:
+    if gv.pm >= 0:
         for entity in entsPillar:
             image(images[entity.img], entity.x, entity.y)
             
@@ -97,16 +120,15 @@ def draw():
         ents[henri.entity].y = henri.y
         
 def mouseReleased():
-    if pm.pm == -1:        
+    if gv.pm == -1:        
         a = dist(mouseX, mouseY, pillars)
         if a >= 0:
             
-            pm.pm = a
-    elif pm.pm >= 0:
+            gv.pm = a
+    elif gv.pm >= 0:
         if mouseY < 130 and mouseX > 850:
-            pm.pm = -1
+            gv.pm = -1
             
-    print pm.pm 
 
 
     
