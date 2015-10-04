@@ -53,11 +53,11 @@ void setup() {
   musicIndiceDeLecture = new Entity(130,10,1,5, true);
   ents.add(musicIndiceDeLecture);
   
-  int[][] positionsX = {{852, 640, 482, 291, 77},{237, 497, 779},{-29, 136, -30, 414, 698},{189, 404, 593, 593, 753, 965}};
-  int[][] positionsY = {{-50, 73, 175, 284, 410},{487, 573, 678},{508, 555, 717, 623, 725},{453, 327, 327, 219, 117, -7}};  
+  int[][] positionsX = {{852, 640, 482, 291, 77},{237, 497, 779},{136, -30, 414, 698},{189, 404, 593, 753, 965}};
+  int[][] positionsY = {{-50, 73, 175, 284, 410},{487, 573, 678},{555, 717, 623, 725},{453, 327, 219, 117, -7}};  
   
-  Entity extractEnt = new Entity(800-80, 800-50, 0, 7, true);
-  extract = new Extract(800,800, extractEnt);
+  Entity extractEnt = new Entity(760, 715, 0, 7, true);
+  extract = new Extract(760,715, extractEnt);
   ents.add(extractEnt);
   for(int type = 0; type<4; type++) {
     for(int j = 0; j< positionsX[type].length; j++) {
@@ -421,12 +421,10 @@ void draw() {
 
 void mouseReleased()
 {
-  int index = findClosestPillar(mouseX, mouseY, pillars, 200.0, false);
-  if(index != -1) {
-    pillars.get(index).switchLight();
-  }
+  boolean clickOnK7 = false;
         
   if(mouseX < 160 && mouseY< 770) {
+    clickOnK7 = true;
     int idx = mouseY / 100;
     musicIndiceDeLecture.y = idx*100 + 10;
     if(idx < (nombreDeCassettes) && musicPlaying != idx) {      
@@ -436,6 +434,13 @@ void mouseReleased()
       }
       players.get(idx).play();
       musicPlaying = idx;
+    }
+  }
+
+  if (clickOnK7 == false) {
+    int index = findClosestPillar(mouseX, mouseY, pillars, 200.0, false);
+    if(index != -1) {
+      pillars.get(index).switchLight();
     }
   }
   
