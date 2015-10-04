@@ -157,6 +157,7 @@ boolean colliding(float x, float y) {
 
 class Junky {
   float x, y, speed, angle, timer;
+  int countNoDep;
   String instruction, state;
   Entity entity, dyingEnt;
   int selfIndex;
@@ -173,6 +174,7 @@ class Junky {
     this.entity = ent;      
     this.dyingEnt = dyingEnt;
     this.selfIndex = selfIndex;
+    this.countNoDep = 0;
     this.won = false;
   }
   
@@ -209,13 +211,26 @@ class Junky {
        return;
     }
     
+    
+    
+    if(state != "continue" && instruction!="random") {
+        switch(musicPlaying) {
+         case 1: instruction = "follow"; break;
+         case 2: instruction = "misantrope"; break;
+         case 3: instruction = "maniac"; break;
+         case 4: instruction = "lovers"; break;
+      }       
+    } 
+    
     float speedMultiplier = 1.0;
     if(musicPlaying != -1)
       speedMultiplier = speedMultipliers[musicPlaying];
      
     if(state == "moving") {
+      float oldx = x;
+      float oldy = y;
       float nextx = x + (float)(speed*dt * Math.cos(angle));
-      float nexty = y + (float)(speed*dt * Math.sin(angle));
+      float nexty = y + (float)(speed*dt * Math.sin(angle));      
       if(colliding(nextx, nexty)) {
         if(instruction == "maniac")
           angle = angle + 3.1415;
@@ -226,6 +241,12 @@ class Junky {
         x = nextx;
         y = nexty;
       }
+      if(dista(x,y, oldx, oldy)<0.1) 
+        countNoDep += 1;
+       else
+         countNoDep = 0;
+       if(countNoDep > 100)
+         instruction = "random";
     }
     
     if(instruction == "follow") {
@@ -236,6 +257,8 @@ class Junky {
            float dist = (float)dista(pillars.get(i).x, pillars.get(i).y, x, y);
            if(dist < 20) {
               speed = 5.0;
+              state = "continue";
+              timer = 1.0;
            }
             else {
               speed = speedMultiplier * (20 + 5000 / dist);
@@ -245,7 +268,7 @@ class Junky {
           timer = 3.0+random(8)/4.0;
           if(speed < 6.0)
             instruction = "random";
-          else
+          else 
             instruction = "continue";          
         }   
       }
