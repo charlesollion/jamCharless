@@ -14,7 +14,8 @@ int offsetX = 23;
 int offsetY = 70;
 int musicPlaying = 0;
 Entity musicIndiceDeLecture;
-float[] speedMultipliers = {0.7, 0.5, 2.0, 4.0, 1.0};
+float[] speedMultipliers = {0.7, 0.5, 2.0, 4.0, 1.0, 1.0, 1.0}; // doit avoir comme length le nombre de cassettes
+int nombreDeCassettes = 7;
 
 void setup() {
   size(1600, 900);
@@ -78,7 +79,7 @@ void setup() {
   } 
   
   minim = new Minim(this);
-  for(int i = 0; i < 5 ; i ++) {    
+  for(int i = 0; i < (nombreDeCassettes) ; i ++) {    
     AudioPlayer player = minim.loadFile("data/piste"+Integer.toString(i)+".mp3");
     players.add(player);
   }
@@ -425,10 +426,10 @@ void mouseReleased()
     pillars.get(index).switchLight();
   }
         
-  if(mouseX < 160 && mouseY< 550) {
+  if(mouseX < 160 && mouseY< 770) {
     int idx = mouseY / 100;
     musicIndiceDeLecture.y = idx*100 + 10;
-    if(idx < 5 && musicPlaying != idx) {      
+    if(idx < (nombreDeCassettes) && musicPlaying != idx) {      
       for(int i = 0; i < players.size(); i++) {
         if(i != idx)
           players.get(i).pause();
